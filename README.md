@@ -27,10 +27,9 @@ See [`docs/architecture.md`](docs/architecture.md) and the ADRs under [`docs/adr
 
 ```text
 src/painel_pericial/      cloud-ready application skeleton
-legacy-src/               source-only snapshot of the desktop implementation
 infra/terraform/          AWS infrastructure as code
 .github/workflows/        CI and reference AWS deployment workflow
-docs/                     architecture and decisions
+docs/                     architecture, legacy analysis and decisions
 tests/                    automated tests
 sample/                   synthetic demo data only
 ```
