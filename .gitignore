@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.coverage
+htmlcov/
+
+# Secrets / local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Databases and exports
+*.db
+*.sqlite
+*.sqlite3
+*.csv
+!sample/*.csv
+
+# Browser sessions/profiles - NEVER COMMIT
+chrome_debug_profile/
+chrome_esaj_profile/
+edge_debug_profile/
+**/*browser_profile*/
+**/*user_data*/
+**/Cookies
+**/Login Data
+
+# Scraper debug artifacts
+debug_*.html
+screenshots/
+artifacts/
+
+# Build / packaging
+build/
+dist/
+*.spec
+*.pkg
+*.toc
+
+# Terraform local state
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfplan
+terraform.tfvars
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
