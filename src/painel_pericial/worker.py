@@ -5,7 +5,7 @@ import time
 
 from .collector import PublicEsajCollector
 from .config import settings
-from .db import add_alert_if_new, add_movement_if_new, active_processes, init_db, upsert_process
+from .db import active_processes, add_alert_if_new, add_movement_if_new, init_db, upsert_process
 from .notifications import publish_alert
 from .rules import classify_alert_type, detect_deadline_and_risk
 
