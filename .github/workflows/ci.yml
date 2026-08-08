@@ -35,10 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
-      - name: Format and show diff
-        run: |
-          terraform fmt -recursive infra
-          git diff -- infra
+      - name: Format check
+        run: terraform fmt -check -recursive infra
       - name: Validate bootstrap
         working-directory: infra/bootstrap
         run: terraform init -backend=false && terraform validate
