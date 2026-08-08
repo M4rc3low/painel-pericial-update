@@ -293,7 +293,7 @@ resource "aws_iam_role_policy" "web_queue" {
       Effect   = "Allow"
       Action   = ["sqs:SendMessage"]
       Resource = aws_sqs_queue.refresh.arn
-    }, {
+      }, {
       Effect = "Allow"
       Action = [
         "ssmmessages:CreateControlChannel",

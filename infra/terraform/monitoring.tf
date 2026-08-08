@@ -8,8 +8,8 @@ resource "aws_cloudwatch_metric_alarm" "alb_5xx" {
   statistic           = "Sum"
   threshold           = 5
   treat_missing_data  = "notBreaching"
-  dimensions = { LoadBalancer = aws_lb.web.arn_suffix }
-  alarm_actions = [aws_sns_topic.alerts.arn]
+  dimensions          = { LoadBalancer = aws_lb.web.arn_suffix }
+  alarm_actions       = [aws_sns_topic.alerts.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
@@ -21,8 +21,8 @@ resource "aws_cloudwatch_metric_alarm" "rds_cpu" {
   period              = 300
   statistic           = "Average"
   threshold           = 80
-  dimensions = { DBInstanceIdentifier = aws_db_instance.main.identifier }
-  alarm_actions = [aws_sns_topic.alerts.arn]
+  dimensions          = { DBInstanceIdentifier = aws_db_instance.main.identifier }
+  alarm_actions       = [aws_sns_topic.alerts.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "queue_age" {
@@ -34,8 +34,8 @@ resource "aws_cloudwatch_metric_alarm" "queue_age" {
   period              = 300
   statistic           = "Maximum"
   threshold           = 600
-  dimensions = { QueueName = aws_sqs_queue.refresh.name }
-  alarm_actions = [aws_sns_topic.alerts.arn]
+  dimensions          = { QueueName = aws_sqs_queue.refresh.name }
+  alarm_actions       = [aws_sns_topic.alerts.arn]
 }
 
 resource "aws_cloudwatch_dashboard" "main" {

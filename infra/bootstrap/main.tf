@@ -39,7 +39,7 @@ resource "aws_ecr_repository" "worker" {
 
 resource "aws_ecr_lifecycle_policy" "web" {
   repository = aws_ecr_repository.web.name
-  policy = jsonencode({ rules = [{ rulePriority = 1, description = "Keep last 20 images", selection = { tagStatus = "any", countType = "imageCountMoreThan", countNumber = 20 }, action = { type = "expire" } }] })
+  policy     = jsonencode({ rules = [{ rulePriority = 1, description = "Keep last 20 images", selection = { tagStatus = "any", countType = "imageCountMoreThan", countNumber = 20 }, action = { type = "expire" } }] })
 }
 resource "aws_ecr_lifecycle_policy" "worker" {
   repository = aws_ecr_repository.worker.name
@@ -56,9 +56,9 @@ resource "aws_iam_role" "github_deploy" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
+      Effect    = "Allow"
       Principal = { Federated = aws_iam_openid_connect_provider.github.arn }
-      Action = "sts:AssumeRoleWithWebIdentity"
+      Action    = "sts:AssumeRoleWithWebIdentity"
       Condition = {
         StringEquals = {
           "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
@@ -75,9 +75,9 @@ resource "aws_iam_role_policy" "github_deploy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "TerraformState"
-        Effect = "Allow"
-        Action = ["s3:ListBucket", "s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
+        Sid      = "TerraformState"
+        Effect   = "Allow"
+        Action   = ["s3:ListBucket", "s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
         Resource = [aws_s3_bucket.terraform_state.arn, "${aws_s3_bucket.terraform_state.arn}/*"]
       },
       {

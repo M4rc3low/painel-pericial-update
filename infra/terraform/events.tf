@@ -90,11 +90,11 @@ resource "aws_lambda_function" "trigger_worker" {
 
   environment {
     variables = {
-      ECS_CLUSTER_ARN             = aws_ecs_cluster.main.arn
-      WORKER_TASK_DEFINITION_ARN  = aws_ecs_task_definition.worker.arn
-      WORKER_TASK_FAMILY          = aws_ecs_task_definition.worker.family
-      WORKER_SUBNET_IDS           = join(",", aws_subnet.app[*].id)
-      WORKER_SECURITY_GROUP_IDS   = aws_security_group.worker.id
+      ECS_CLUSTER_ARN            = aws_ecs_cluster.main.arn
+      WORKER_TASK_DEFINITION_ARN = aws_ecs_task_definition.worker.arn
+      WORKER_TASK_FAMILY         = aws_ecs_task_definition.worker.family
+      WORKER_SUBNET_IDS          = join(",", aws_subnet.app[*].id)
+      WORKER_SECURITY_GROUP_IDS  = aws_security_group.worker.id
     }
   }
 }
