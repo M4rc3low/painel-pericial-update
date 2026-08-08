@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint, create_engine, select
-from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 from .config import settings
 
@@ -27,7 +27,7 @@ class Process(Base):
     deadline_type: Mapped[str] = mapped_column(String(64), default="SEM PRAZO")
     risk_level: Mapped[str] = mapped_column(String(32), default="SEM PRAZO")
     source_url: Mapped[str] = mapped_column(Text, default="")
-    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
 
 
 class Movement(Base):
@@ -38,7 +38,7 @@ class Movement(Base):
     process_number: Mapped[str] = mapped_column(String(64), ForeignKey("processes.process_number", ondelete="CASCADE"), index=True)
     movement_date: Mapped[str] = mapped_column(String(16), default="")
     movement_text: Mapped[str] = mapped_column(Text)
-    collected_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    collected_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
 
 
 class Alert(Base):
@@ -54,7 +54,7 @@ class Alert(Base):
     deadline_type: Mapped[str] = mapped_column(String(64), default="SEM PRAZO")
     risk_level: Mapped[str] = mapped_column(String(32), default="SEM PRAZO")
     alert_type: Mapped[str] = mapped_column(String(64))
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
     is_read: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
 
@@ -67,7 +67,7 @@ def init_db() -> None:
 
 
 def utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def upsert_process(data: dict) -> None:
