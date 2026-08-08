@@ -1,0 +1,58 @@
+name: Destroy AWS Dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type destroy-dev to confirm destruction of the dev stack'
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: painel-pericial-aws-dev
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: sa-east-1
+
+jobs:
+  destroy:
+    if: ${{ inputs.confirmation == 'destroy-dev' }}
+    runs-on: ubuntu-latest
+    environment: aws-dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials with GitHub OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        working-directory: infra/terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
+            -backend-config="key=painel-pericial/dev/terraform.tfstate" \
+            -backend-config="region=$AWS_REGION" \
+            -backend-config="use_lockfile=true"
+
+      - name: Terraform destroy plan
+        working-directory: infra/terraform
+        env:
+          OPS_EMAIL: ${{ vars.OPS_EMAIL }}
+        run: |
+          args=(-var-file="dev.tfvars" -var="image_tag=destroy-placeholder")
+          if [ -n "$OPS_EMAIL" ]; then args+=( -var="ops_email=$OPS_EMAIL" ); fi
+          terraform plan -destroy "${args[@]}" -out=destroy.tfplan
+
+      - name: Destroy dev stack
+        working-directory: infra/terraform
+        run: terraform apply -auto-approve destroy.tfplan
