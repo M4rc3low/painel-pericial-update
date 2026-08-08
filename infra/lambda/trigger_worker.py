@@ -3,7 +3,6 @@ import os
 
 import boto3
 
-
 ecs = boto3.client("ecs")
 
 
