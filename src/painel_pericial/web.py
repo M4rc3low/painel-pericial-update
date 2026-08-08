@@ -48,9 +48,12 @@ with f3:
     deadline_type = st.selectbox("Tipo de prazo", ["Todos"] + sorted(x for x in df["deadline_type"].fillna("").unique() if x))
 
 filtered = df.copy()
-if client != "Todos": filtered = filtered[filtered["client"] == client]
-if risk != "Todos": filtered = filtered[filtered["risk_level"] == risk]
-if deadline_type != "Todos": filtered = filtered[filtered["deadline_type"] == deadline_type]
+if client != "Todos":
+    filtered = filtered[filtered["client"] == client]
+if risk != "Todos":
+    filtered = filtered[filtered["risk_level"] == risk]
+if deadline_type != "Todos":
+    filtered = filtered[filtered["deadline_type"] == deadline_type]
 
 k1, k2, k3, k4 = st.columns(4)
 k1.metric("Processos", len(filtered))
