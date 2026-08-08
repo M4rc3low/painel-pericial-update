@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: painel
+      POSTGRES_USER: painel
+      POSTGRES_PASSWORD: local-only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U painel"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    environment:
+      APP_ENV: local
+      DATABASE_URL: postgresql+psycopg://painel:local-only@db:5432/painel
+    ports:
+      - "8501:8501"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      APP_ENV: local
+      DATABASE_URL: postgresql+psycopg://painel:local-only@db:5432/painel
+      COLLECTOR_MODE: public
+      COLLECTOR_DELAY_SECONDS: "1.5"
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles: ["worker"]
+
+volumes:
+  pgdata:

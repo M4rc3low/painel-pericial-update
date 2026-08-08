@@ -1,0 +1,11 @@
+environment            = "prod"
+web_desired_count      = 2
+web_min_capacity       = 2
+web_max_capacity       = 6
+db_instance_class      = "db.t4g.small"
+db_multi_az            = true
+db_deletion_protection = true
+nat_gateway_mode       = "per_az"
+enable_waf             = true
+enable_cognito_auth    = true
+monthly_budget_usd     = 150
