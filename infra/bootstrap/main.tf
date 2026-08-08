@@ -17,7 +17,12 @@ resource "aws_s3_bucket_public_access_block" "terraform_state" {
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
   bucket = aws_s3_bucket.terraform_state.id
-  rule { apply_server_side_encryption_by_default { sse_algorithm = "AES256" } }
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
 }
 
 resource "aws_ecr_repository" "web" {
@@ -38,7 +43,7 @@ resource "aws_ecr_lifecycle_policy" "web" {
 }
 resource "aws_ecr_lifecycle_policy" "worker" {
   repository = aws_ecr_repository.worker.name
-  policy = aws_ecr_lifecycle_policy.web.policy
+  policy     = aws_ecr_lifecycle_policy.web.policy
 }
 
 resource "aws_iam_openid_connect_provider" "github" {
@@ -70,25 +75,25 @@ resource "aws_iam_role_policy" "github_deploy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid = "TerraformState"
+        Sid    = "TerraformState"
         Effect = "Allow"
         Action = ["s3:ListBucket", "s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
         Resource = [aws_s3_bucket.terraform_state.arn, "${aws_s3_bucket.terraform_state.arn}/*"]
       },
       {
-        Sid = "EcrPush"
-        Effect = "Allow"
-        Action = ["ecr:GetAuthorizationToken"]
+        Sid      = "EcrPush"
+        Effect   = "Allow"
+        Action   = ["ecr:GetAuthorizationToken"]
         Resource = "*"
       },
       {
-        Sid = "EcrRepository"
-        Effect = "Allow"
-        Action = ["ecr:BatchCheckLayerAvailability", "ecr:GetDownloadUrlForLayer", "ecr:BatchGetImage", "ecr:PutImage", "ecr:InitiateLayerUpload", "ecr:UploadLayerPart", "ecr:CompleteLayerUpload", "ecr:DescribeRepositories"]
+        Sid      = "EcrRepository"
+        Effect   = "Allow"
+        Action   = ["ecr:BatchCheckLayerAvailability", "ecr:GetDownloadUrlForLayer", "ecr:BatchGetImage", "ecr:PutImage", "ecr:InitiateLayerUpload", "ecr:UploadLayerPart", "ecr:CompleteLayerUpload", "ecr:DescribeRepositories"]
         Resource = [aws_ecr_repository.web.arn, aws_ecr_repository.worker.arn]
       },
       {
-        Sid = "ApplicationInfrastructure"
+        Sid    = "ApplicationInfrastructure"
         Effect = "Allow"
         Action = [
           "ec2:*", "elasticloadbalancing:*", "ecs:*", "application-autoscaling:*",
@@ -99,7 +104,7 @@ resource "aws_iam_role_policy" "github_deploy" {
         Resource = "*"
       },
       {
-        Sid = "ProjectIamRoles"
+        Sid    = "ProjectIamRoles"
         Effect = "Allow"
         Action = [
           "iam:CreateRole", "iam:DeleteRole", "iam:GetRole", "iam:TagRole", "iam:UntagRole",
