@@ -1,5 +1,13 @@
 # Painel Pericial Update
 
+<!-- portfolio-cover:start -->
+<div align="center">
+  <img src="https://raw.githubusercontent.com/M4rc3low/M4rc3low.github.io/main/assets/projects/painel-pericial.svg" alt="Capa conceitual ilustrativa do projeto painel-pericial-update" width="920">
+</div>
+
+> **Capa visual ilustrativa:** representa o conceito do projeto; não é uma captura da aplicação em execução. Veja a [galeria visual completa](https://m4rc3low.github.io/projetos.html).
+<!-- portfolio-cover:end -->
+
 Repositório reservado para o histórico e a evolução de uma iniciativa de atualização do **Painel Pericial**.
 
 ## Status atual
